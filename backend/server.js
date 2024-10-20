@@ -1,14 +1,26 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser')
 const path = require('path');
 require('dotenv').config()
+const {logger} = require('./middleware/logger.js')
+const {errorHandler}  = require('./middleware/errorHandler.js')
+const corsOptions = require('./config/corsOptions.js')
 const app = express();
 const PORT = process.env.PORT || 3500;
 
-app.use(express.json());
-app.use(cors());
+//3rd Party middleware
+app.use(cookieParser())
+//Custom middleware 
+app.use(logger)
 
-app.use('/', express.static(path.join(__dirname, '/public')));
+// Built in middleware
+app.use(express.json());
+app.use(cors(corsOptions));
+
+
+
+app.use('/', express.static(path.join(__dirname, 'public')));
 app.use('/' , require('./routes/root.js'));
 
 app.all('*', (req, res)=>{
@@ -25,4 +37,5 @@ app.all('*', (req, res)=>{
 })
 
 
+app.use(errorHandler)
 app.listen(PORT,()=> console.log(`Server is running on port ${PORT}`));
