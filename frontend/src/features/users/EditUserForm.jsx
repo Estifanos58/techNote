@@ -83,7 +83,7 @@ function EditUserForm({user}) {
         await deleteUser({id: user.id});
     }
 
-    const option = Option.values(ROLES).map(role => {
+    const option = Object.values(ROLES).map(role => {
         return (
             <option key={role} value={role}>
                 {role}
