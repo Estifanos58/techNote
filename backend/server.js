@@ -28,8 +28,10 @@ app.use(cors(corsOptions));
 
 
 app.use('/', express.static(path.join(__dirname, 'public')));
+
 app.use('/' , require('./routes/root.js'));
 app.use('/users', require('./routes/userRoutes.js'));
+app.use('/auth', require('./routes/authRoutes.js'));
 app.use('/notes', require('./routes/noteRoutes.js'))
 
 app.all('*', (req, res)=>{
