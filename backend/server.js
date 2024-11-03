@@ -8,6 +8,7 @@ const {errorHandler}  = require('./middleware/errorHandler.js')
 const corsOptions = require('./config/corsOptions.js')
 const connectDB = require('./config/dbConn.js')
 const mongoose = require('mongoose')
+
 const app = express();
 const PORT = process.env.PORT || 3500;
 

@@ -1,21 +1,24 @@
 const User = require('../models/User');
 const Note = require('../models/Note');
-const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');
 
 // @desc    Get all users
 // @route   GET /users
 // @access  Private
 
- const getAllUsers = asyncHandler(async (req, res) => {
-    const users = await User.find().select('-password').lean()
-    if(!users?.length){
-        return res.status(400).json({
-            message : 'No users found'
-        })
+ const getAllUsers = async (req, res) => {
+    try{
+        const users = await User.find().select('-password').lean()
+        if(!users?.length){
+            return res.status(400).json({
+                message : 'No users found'
+            })
+        }
+        res.json(users)
+    } catch(err){
+        console.log(err)
     }
-    res.json(users)
- })
+ }
 
  // @desc    create a new users
 // @route   POST /users
@@ -68,10 +71,11 @@ const createNewUser = async (req, res) => {
 // @route   PUT /users
 // @access  Private
 
-const updateUser  = asyncHandler(async (req, res) => {
- const {id, username, password, roles, active} = req.body
+const updateUser  = async (req, res) => {
+ try{
+    const {id, username, password, roles, active} = req.body
 
- //confirm data
+    //confirm data
     if(!id || !username || !Array.isArray(roles) || !roles.length || typeof(active) !== 'boolean') {
         return res.status(400).json({message : 'All fields are required'})
     }
@@ -104,37 +108,44 @@ const updateUser  = asyncHandler(async (req, res) => {
     const updatedUser = await user.save()
 
     res.json({message: `${updatedUser.username} updated`})
-})
+} catch(err) {
+    console.log(err)
+}
+}
 
 
 // @desc    Delete a users
 // @route   DELETE /users
 // @access  Private
 
-const deleteUser = asyncHandler(async (req, res) => {
-    const {id} = req.body
+const deleteUser = async (req, res) => {
+    try{
+        const {id} = req.body
 
-    if(!id){
-        return res.status(400).json({message : 'User ID is required'})
+        if(!id){
+            return res.status(400).json({message : 'User ID is required'})
+        }
+
+        const note = await Note.findOne({ user: id}).lean().exec()
+
+        if(note){
+            return res.status(400).json({message : 'User has notes. Delete notes first'})
+        }
+        const user = await User.findById(id).exec()
+
+        if(!user){
+            return res.status(400).json({message: "User not found"})
+        }
+
+        const result = await User.deleteOne({_id: id}).exec()
+
+        const reply = `Username ${result.username} deleted`
+
+        res.json(reply)
+    } catch(err) {
+        console.log(err)
     }
-
-    const note = await Note.findOne({ user: id}).lean().exec()
-
-    if(note){
-        return res.status(400).json({message : 'User has notes. Delete notes first'})
-    }
-    const user = await User.findById(id).exec()
-
-    if(!user){
-        return res.status(400).json({message: "User not found"})
-    }
-
-    const result = await User.deleteOne({_id: id}).exec()
-
-    const reply = `Username ${result.username} deleted`
-
-    res.json(reply)
-})
+}
 
 module.exports = {
     getAllUsers,
