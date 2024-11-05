@@ -38,10 +38,6 @@ const DashHeader = () => {
     const onNotesClicked = () => navigate('/dash/notes')
     const onUsersClicked = () => navigate('/dash/users')
 
-    if(isLoading) return <p>Logging Out ...</p>
-
-    if(isError) return <p>Error: {error.data?.message}</p>
-
     let dashClass = null
     if(!DASH_REGEX.test(pathname) && !NOTES_REGEX.test(pathname) && !USERS_REGEX.test(pathname)){
         dashClass = 'dash-header__container--small'
@@ -80,7 +76,7 @@ const DashHeader = () => {
             <button
                 className='icon-button'
                 title='New Note'
-                onClick={onNewNoteClicked}
+                onClick={onUsersClicked}
             >
                 <FontAwesomeIcon icon={faFileCirclePlus}/>
             </button>
@@ -94,7 +90,7 @@ const DashHeader = () => {
             <button
                 className='icon-button'
                 title='New Note'
-                onClick={onNewNoteClicked}
+                onClick={onNotesClicked}
             >
                 <FontAwesomeIcon icon={faFileCirclePlus}/>
             </button>
