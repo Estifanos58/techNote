@@ -21,6 +21,7 @@ function NewUserForm() {
   const [password, setPassword] = useState('');
   const [validPassword, setValidPassword] = useState(false);
   const [roles, setRoles] = useState(['Employee']);
+  const navigate = useNavigate()
 
   useEffect(()=>{
     setValidUsername(USER_REGEX.test(username));

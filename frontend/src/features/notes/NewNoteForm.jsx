@@ -17,12 +17,13 @@ const NewNoteForm = ({users}) => {
     const [title, setTitle] = useState('')
     const [text, setText] = useState('')
     const [userId, setUserId] = useState(users[0].id)
+    const navigate = useNavigate()
 
     useEffect(()=>{
         if(isSuccess) {
             setTitle('')
             setText('')
-            navigator('/dash/notes')
+            navigate('/dash/notes')
         }
     },[isSuccess, navigate])
 
@@ -76,7 +77,7 @@ const NewNoteForm = ({users}) => {
                     type="text"
                     autoComplete="off"
                     value={title}
-                    onChange={onTitleChanged}
+                    onChange={onTitleChange}
                 />
 
                 <label className="form__label" htmlFor="text">
@@ -86,7 +87,7 @@ const NewNoteForm = ({users}) => {
                     id="text"
                     name="text"
                     value={text}
-                    onChange={onTextChanged}
+                    onChange={onTextChange}
                 />
 
                 <label className="form__label form__checkbox-container" htmlFor="username">
@@ -96,7 +97,7 @@ const NewNoteForm = ({users}) => {
                     name="username"
                     className="form__select"
                     value={userId}
-                    onChange={onUserIdChanged}
+                    onChange={onUserIdChange}
                 >
                     {options}
                 </select>

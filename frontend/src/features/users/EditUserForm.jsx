@@ -24,12 +24,12 @@ function EditUserForm({user}) {
 
     const navigate = useNavigate();
 
-    const [username, setUsername] = useState(user.username);
+    const [username, setUsername] = useState(user?.username);
     const [validUsername, setValidUsername] = useState(false);
     const [password, setPassword] = useState('');
     const [validPassword, setValidPassword] = useState(false);
-    const [roles, setRoles] = useState(user.roles);
-    const [active, setActive] = useState(user.active)
+    const [roles, setRoles] = useState(user?.roles);
+    const [active, setActive] = useState(user?.active)
 
     useEffect(()=>{
         setValidUsername(USER_REGEX.test(username));
@@ -94,15 +94,15 @@ function EditUserForm({user}) {
     let canSave
 
     if(password) {
-        canSave = [roles.length, validPassword,validPassword].every(Boolean) && !isLoading
+        canSave = [roles?.length, validPassword,validPassword].every(Boolean) && !isLoading
     } else {
-        canSave = [roles.length, validUsername].every(Boolean) && !isLoading
+        canSave = [roles?.length, validUsername].every(Boolean) && !isLoading
     }
 
     const errClass = (isError || isDelError) ? "errmsg" : "offscreen";
     const validUserClass = !validUsername ? "form__input--incomplete" : "";
     const validPwdClass = password && !validPassword ? "form__input--incomplete" : "";
-    const validRolesClass = !Boolean(roles.length) ? "form__input--incomplete" : "";
+    const validRolesClass = !Boolean(roles?.length) ? "form__input--incomplete" : "";
 
     const errContent = (error?.data?.message || delError?.data?.message) ?? "";
 
