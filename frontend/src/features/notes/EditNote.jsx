@@ -27,7 +27,16 @@ function EditNote() {
       })
    })
 
-   const content = note && users ? <EditNoteForm note={note} users={users} /> : <p>Loading ...</p>
+   // const content = note && users ? <EditNoteForm note={note} users={users} /> : <p>Loading ...</p>
+   if(!note || !users?.length) return <PulseLoader color="#FFF"/>
+
+   if(!isManager && !isAdmin) {
+      if(note.username !== username) {
+         return <p className="errmsg">No access</p>
+      }
+   }
+
+   const content = <EditNoteForm note={note} users={users} />
 
    return content
 }
