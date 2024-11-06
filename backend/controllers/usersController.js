@@ -30,7 +30,7 @@ const createNewUser = async (req, res) => {
         const {username, roles, password} = req.body
 
         //Confirm data
-        if(!username || !password || !Array.isArray(roles) || !roles.length) {
+        if(!username || !password) {
             return res.status(400).json({ message : 'All fields are required'})
         }
     

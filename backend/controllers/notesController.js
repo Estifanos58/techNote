@@ -82,7 +82,7 @@ const updateNotes = async (req, res)=>{
                 message : "All fields are required"
             })
         }
-        const note = await Note.findOne({_id:id}).exec()
+        const note = await Note.findOne({_id:id}) .exec()
     
         if(!note) {
             return res.status(404).json({
